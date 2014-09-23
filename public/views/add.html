@@ -1,0 +1,9 @@
+<div ng-controller="userController">
+	<form>
+		<div><input placeholder="Код" type="text" ng-model="formData.code"></div>
+		<div><input placeholder="Имя" type="text" ng-model="formData.fname"></div>
+		<div><input placeholder="Фамилия" type="text" ng-model="formData.sname"></div>
+		<div><input placeholder="Телефон" type="text" ng-model="formData.phone"></div>
+		<button type="submit" ng-click="addUser()">Добавить</button>
+	</form>
+</div>
