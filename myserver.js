@@ -1,67 +1,73 @@
-var express		= require('express');
-var mysql		= require('mysql');
-var bodyParser 	= require('body-parser');
+var express			= require('express');
+var app 			= express();
+var bodyParser 		= require('body-parser');
+var mongoose 		= require('mongoose');
+var methodOverride 	= require('method-override');
 
-var app 		= express();
+mongoose.connect('mongodb://127.0.0.1:27017/maindb');
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+app.use(methodOverride());
 
-//================= mysql =================
-var conn 	= mysql.createConnection({
-	host: 'localhost',
-	database: 'work',
-	user: 'admin',
-	password: 'admin'
+var User = mongoose.model('users', {
+	code  : String,
+	fname : String,
+	sname : String,
+	phone : String
 });
-conn.connect();
-//=========================================
 
 app.get('/api/users', function(req, res) {
 	
-	conn.query('select * from users', function(err, rows, fields) {
+	User.find(function(err, users) {
+	
 		if(err) res.send(err);
-
-	res.json(rows);
+		
+		res.json(users);
 	});
 });
 
 app.post('/api/users', function(req, res) {
 	
-	var code = req.body.code;
-	var fname = req.body.fname;
-	var sname = req.body.sname;
-	var phone = req.body.phone;
+	User.create({
+		code  : req.body.code,
+		fname : req.body.fname,
+		sname : req.body.sname,
+		phone : req.body.phone,
+		done  : false
+	}, function(err, user) {
+		
+		if(err) res.send(err);
 
-	conn.query("insert into users(code, fname, sname, phone) values('"+
-		code+"', '"+fname+"', '"+sname+"', '"+phone+"')",
-			function(err, rows, fields) {
-				if(err) res.send(err);
-		});
-
+	});
 	res.redirect(200, '/');
 });
 
 app.delete('/api/users/:user_id', function(req, res) {
 
-	var id = req.params.user_id;
+	User.remove({
+		
+		_id : req.params.user_id
+	
+	}, function(err, user) {
 
-	conn.query("delete from users where id = " + id,
-			function(err, rows, fields) {
-				if(err) res.send(err);
+		if(err) res.send(err);
 
-		conn.query('select * from users', function(err, rows, fields) {
+		User.find(function(err, users) {
+			
 			if(err) res.send(err);
 
-			res.json(rows);
+			res.json(users);
 		});
+
 	});
+			
 });
 
 app.get('*', function(req, res) {
-		res.sendFile('./public/index.html');
+	res.sendFile('./public/index.html');
 });
 
 app.listen(8080);

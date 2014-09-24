@@ -1,7 +1,7 @@
 
-var app = angular.module('testapp', ['ngRoute']);
+var appUser = angular.module('appUser', ['ngRoute']);
 
-app.config(function($routeProvider) {
+appUser.config(function($routeProvider) {
 	$routeProvider
 		.when('/', {
 			templateUrl: 'views/main.html'
@@ -42,7 +42,7 @@ function userController($scope, $http) {
 				$scope.users = data;
 			})
 			.error(function(data) {
-				console.log('Error: ' + data);
+				console.log(data);
 			});
 	};
 }

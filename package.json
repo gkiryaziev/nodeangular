@@ -1,13 +1,14 @@
 {
-  "name"		: "mytestserver",
-  "description"	: "my test server",
-  "version"		: "0.0.1",
-  "main"		: "myserver.js",
-  "author"		: "me",
-  "private"		: true,
-  "dependencies"	: {
-    "express"		  : "x",
-    "mysql"			  : "x",
-    "body-parser" : "x"
+  "name"		            : "mytestserver",
+  "description"	        : "my test server",
+  "version"		          : "0.0.1",
+  "main"		            : "myserver.js",
+  "author"		          : "me",
+  "private"		          : true,
+  "dependencies"        : {
+    "express"           : "x",
+    "mongoose"          : "x",
+    "body-parser"       : "x",
+    "method-override"   : "x"
   }
 }
