@@ -24,6 +24,16 @@ function userController($scope, $http) {
 		.error(function(data) {
 			console.log(data);
 		});
+        
+    $scope.findUser = function(code) {
+        $http.get('/api/users/' + code)
+            .success(function(data) {
+                $scope.users = data;			
+            })
+            .error(function(data) {
+                console.log(data);
+            });
+    };
 
 	$scope.addUser = function() {
 		$http.post('/api/users', $scope.formData)

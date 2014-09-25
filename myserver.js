@@ -29,6 +29,20 @@ app.get('/api/users', function(req, res) {
 	});
 });
 
+app.get('/api/users/:user_code', function(req, res) {
+    
+    User.find({
+		
+		code : req.params.user_code
+	
+	}, function(err, users) {
+
+		if(err) res.send(err);
+        
+        res.json(users);
+	});
+});
+
 app.post('/api/users', function(req, res) {
 	
 	User.create({
@@ -61,9 +75,7 @@ app.delete('/api/users/:user_id', function(req, res) {
 
 			res.json(users);
 		});
-
-	});
-			
+	});			
 });
 
 app.get('*', function(req, res) {
